@@ -17,9 +17,14 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // In-memory data store for the UMKM application
 let menuItems = [
-  { id: 1, name: 'Nasi Goreng Spesial', price: 25000, description: 'Nasi goreng dengan telur, ayam, dan sayuran.', image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80&w=400' },
-  { id: 2, name: 'Mie Goreng Seafood', price: 30000, description: 'Mie goreng dengan udang, cumi, dan bumbu rempah.', image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=400' },
-  { id: 3, name: 'Es Teh Manis', price: 5000, description: 'Es teh manis segar pelepas dahaga.', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=400' },
+  { id: 1, name: 'Fuyunghai Ayam Saus Asam Manis', price: 35000, description: 'Telur dadar tebal ala Chinese dengan daging ayam cincang, sayuran, disiram saus asam manis spesial.', image: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&q=80&w=400' },
+  { id: 2, name: 'Sapo Tahu Seafood', price: 45000, description: 'Tahu sutra lembut dimasak dalam hot plate dengan udang, cumi, jamur, dan sayuran.', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=80&w=400' },
+  { id: 3, name: 'Mie Goreng Ulang Tahun', price: 38000, description: 'Mie goreng khas Chinese Food dengan telur puyuh, ayam, udang, dan sayuran. Melambangkan umur panjang.', image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=400' },
+  { id: 4, name: 'Ayam Koloke (Asam Manis)', price: 40000, description: 'Potongan ayam filet goreng tepung renyah yang dimasak dengan saus asam manis pedas nanas.', image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&q=80&w=400' },
+  { id: 5, name: 'Nasi Goreng Yang Chow (Halal)', price: 35000, description: 'Nasi goreng putih ala Hong Kong tanpa kecap, dengan udang, kacang polong, dan telur.', image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80&w=400' },
+  { id: 6, name: 'Sapi Lada Hitam (Black Pepper)', price: 55000, description: 'Irisan daging sapi empuk ditumis dengan paprika dan saus lada hitam khas oriental.', image: 'https://images.unsplash.com/photo-1544025162-811114210bfa?auto=format&fit=crop&q=80&w=400' },
+  { id: 7, name: 'Capcay Goreng Seafood', price: 38000, description: 'Tumis 10 macam sayuran segar dipadukan dengan bakso ikan, udang, dan kekian halal.', image: 'https://images.unsplash.com/photo-1582515073490-39981397c445?auto=format&fit=crop&q=80&w=400' },
+  { id: 8, name: 'Dimsum Ayam Udang (Isi 4)', price: 25000, description: 'Dimsum siomay kukus hangat dan lembut, terbuat dari olahan ayam dan udang cincang.', image: 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&q=80&w=400' },
 ];
 
 let orders = [];
@@ -136,9 +141,9 @@ app.post('/api/login', (req, res) => {
 // --- Deployment Configuration ---
 
 // 1. Serve Admin App Static Files
-app.use('/admin', express.static(path.join(__dirname, 'admin-website/dist')));
+app.use('/admin', express.static(path.join(__dirname, 'dist/admin')));
 app.use('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin-website/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist/admin', 'index.html'));
 });
 
 // 2. Serve Buyer App Static Files (Catch-all for root)
@@ -147,6 +152,11 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Only listen if not running on Vercel
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}
+
+export default app;
